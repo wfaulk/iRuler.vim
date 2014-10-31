@@ -204,7 +204,7 @@ if !exists('s:initialized')
 endif
 
 python << EOF
-''' Get the list of rules and render them on the left split'''
+''' Get the list of rules and render them preview buffer'''
 
 try:
     l = ltm.get_list()
