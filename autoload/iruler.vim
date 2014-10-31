@@ -4,6 +4,9 @@
 " If you modify this, please share your work!
 " Contributors: Matt Cauthorn, Jason Rahm
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! iruler#Init()
+let s:initialized = 1
 "Create a global var to toggle on init. Don't change this!!!
 py create_rule = True
 
@@ -87,12 +90,16 @@ def open_rule(rule_name):
     rule = rule[0].rule_definition.splitlines()
     return rule
 EOF
+endfunction
 
 """""""""""""""""""""""""""""
 " Define our vim functions
 """""""""""""""""""""""""""""
-function! Connect(HOST)
+function! iruler#Connect(HOST)
 "Login function. Points to your favorite BigIP.
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 
 user,passwd = get_creds()
@@ -104,7 +111,10 @@ ltm, gtm = get_objects(host,user,passwd)
 EOF
 endfunction
 
-function! PubRule(...)
+function! iruler#PubRule(...)
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 '''Publish the rule you're working on.'''
 # TODO Need to modify to call System/ConfigSync/save_configuration(savemode=SAVE_HIGH_LEVEL_CONFIG)
@@ -171,7 +181,10 @@ EOF
 endfunction
 
 """""""""""""""""""""
-function! GetRules()
+function! iruler#GetRules()
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 
 python << EOF
 ''' Get the list of rules and render them on the left split'''
@@ -214,7 +227,10 @@ EOF
 
 endfunction
 """""""""""""""""""""
-function! OpenRule()
+function! iruler#OpenRule()
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 
 # Figure out if we're in the LTM or GTM menu section.
@@ -235,7 +251,10 @@ create_rule = False
 EOF
 endfunction
 
-function! NewRule()
+function! iruler#NewRule()
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 '''
 Simple func to toggle create_rule to true.
@@ -251,7 +270,10 @@ EOF
 endfunction
 
 
-function! Partition(name)
+function! iruler#Partition(name)
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 '''
 Switches the current partition.
@@ -263,7 +285,10 @@ print "Current partition is: %s" % b2.Management.Partition.get_active_partition(
 EOF
 endfunction
 
-function! ApplyRule(virtual_server)
+function! iruler#ApplyRule(virtual_server)
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 '''
 Applies a rule to the VS name passed in.
@@ -292,7 +317,10 @@ EOF
 endfunction
 
 
-function! DeleteRule(...)
+function! iruler#DeleteRule(...)
+if !exists('s:initialized')
+	call iruler#Init()
+endif
 python << EOF
 ''' Deletes a rule. '''
 

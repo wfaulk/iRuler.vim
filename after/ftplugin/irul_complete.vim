@@ -92,7 +92,8 @@ if !exists("*s:SetVals")
         " Save any current dictionaries the user has set:
         let s:irul_save_dictions = &dictionary
         " Temporarily use only irul's dictionary:
-        let &dictionary = g:irul_location
+        "let &dictionary = g:irul_location
+        let &dictionary = "irul_dict"
 
         " Save the ins-completion options the user has set:
         let s:irul_save_cot = &completeopt
