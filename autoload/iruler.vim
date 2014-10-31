@@ -15,6 +15,11 @@ py create_rule = True
 python << EOF
 import vim
 import os
+import sys
+import os.path
+libpath = os.path.join(os.path.dirname(os.path.dirname(vim.eval("expand('<sfile>:p')"))), 'pylibs')
+sys.path = [os.path.dirname(libpath), libpath] + sys.path
+
 from pycontrol.pycontrol import BIGIP
 
 def get_objects(host,user,passwd):
