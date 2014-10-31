@@ -325,6 +325,7 @@ try:
 except Exception,e:
     print e
 EOF
+endfunction
 
 function! iruler#ApplyRule(virtual_server)
 if !exists('s:initialized')
