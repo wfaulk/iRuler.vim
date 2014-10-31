@@ -103,7 +103,7 @@ endfunction
 function! iruler#Connect(...)
 "Login function. Points to your favorite BigIP.
 if a:0 > 1
-	print "Specify at most one BigIP to connect to"
+	echo "Specify at most one BigIP to connect to"
 	return -1
 endif
 if !exists('s:initialized')
