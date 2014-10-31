@@ -45,7 +45,7 @@ def get_name():
 
 def get_creds():
     ''' returns username and pass from the vim prompt'''
-    vim.command('let USER = input("Username: ")')
+    vim.command('let USER = input("Username: ", $USER)')
     vim.command('let PASS = inputsecret("Password: ")')
     user = vim.eval("USER")
     passwd = vim.eval("PASS")
