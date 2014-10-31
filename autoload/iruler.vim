@@ -101,15 +101,24 @@ endfunction
 """""""""""""""""""""""""""""
 " Define our vim functions
 """""""""""""""""""""""""""""
-function! iruler#Connect(HOST)
+function! iruler#Connect(...)
 "Login function. Points to your favorite BigIP.
+if a:0 > 1
+	print "Specify at most one BigIP to connect to"
+	return -1
+endif
 if !exists('s:initialized')
 	call iruler#Init()
+endif
+if a:0 == 0
+	let s:hostname = input("BigIP hostname: ")
+else
+	let s:hostname = a:1
 endif
 python << EOF
 
 user,passwd = get_creds()
-host = vim.eval("a:HOST")
+host = vim.eval("s:hostname")
 
 # Our main objects to call methods against.
 ltm, gtm = get_objects(host,user,passwd)
