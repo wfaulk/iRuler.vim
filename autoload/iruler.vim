@@ -360,16 +360,18 @@ if del_gtm:
     ''' we're deleting a gtm rule.'''
     try: 
         gtm.delete_rule([name])
+        vim.command("let s:needsave = 1")
         print "GTM rule %s deleted." % name
     except Exception,e:
         print e
 else:
     try: 
         ltm.delete_rule([name])
+        vim.command("let s:needsave = 1")
         print "LTM rule %s deleted." % name
     except Exception,e:
         print e
 EOF
 endfunction
 
-" vim: shiftwidth=4 expandtab
+" vim: shiftwidth=4 tabstop=4 expandtab
