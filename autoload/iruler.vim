@@ -154,7 +154,7 @@ try:
 	    ruledef = ltm.typefactory.create('LocalLB.Rule.RuleDefinition')
 except NameError:
 	print "Please connect to a BigIP first."
-	return
+	sys.exit()
 
 ruledef.rule_name = rule_name
 ruledef.rule_definition = text_rule.encode('ascii')
@@ -212,7 +212,7 @@ try:
 	g = gtm.get_list()
 except NameError:
 	print "Please connect to a BigIP first."
-	return
+	sys.exit()
 
 # Vim is utf-8 by default, so convert.
 l = [x.encode('utf8') for x in l]
