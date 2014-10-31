@@ -147,10 +147,14 @@ buf = vim.current.buffer
 text_rule = "\n".join(buf)
 rule_name = get_name()
 
-if save_gtm:
-    ruledef = gtm.typefactory.create('GlobalLB.Rule.RuleDefinition')
-else:
-    ruledef = ltm.typefactory.create('LocalLB.Rule.RuleDefinition')
+try:
+	if save_gtm:
+	    ruledef = gtm.typefactory.create('GlobalLB.Rule.RuleDefinition')
+	else:
+	    ruledef = ltm.typefactory.create('LocalLB.Rule.RuleDefinition')
+except NameError:
+	print "Please connect to a BigIP first."
+	return
 
 ruledef.rule_name = rule_name
 ruledef.rule_definition = text_rule.encode('ascii')
@@ -203,8 +207,12 @@ endif
 python << EOF
 ''' Get the list of rules and render them on the left split'''
 
-l = ltm.get_list()
-g = gtm.get_list()
+try:
+	l = ltm.get_list()
+	g = gtm.get_list()
+except NameError:
+	print "Please connect to a BigIP first."
+	return
 
 # Vim is utf-8 by default, so convert.
 l = [x.encode('utf8') for x in l]
