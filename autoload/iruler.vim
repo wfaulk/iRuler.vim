@@ -254,6 +254,7 @@ vim.command(':e ' + rule_name + '.irul')
 buf2 = vim.current.buffer
 buf2[:] = [x.encode('utf8') for x in open_rule(clean_name(raw_name))]
 create_rule = False
+vim.command("set nomodified")
 EOF
 endfunction
 
