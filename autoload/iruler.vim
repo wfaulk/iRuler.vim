@@ -11,6 +11,7 @@ py libpath = os.path.join(os.path.dirname(os.path.dirname(vim.eval("expand('<sfi
 
 function! iruler#Init()
 let s:initialized = 1
+au BufRead,BufNewFile *.irul set filetype=irul
 "Create a global var to toggle on init. Don't change this!!!
 py create_rule = True
 
