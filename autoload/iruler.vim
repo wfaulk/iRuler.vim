@@ -317,11 +317,12 @@ if !exists('s:initialized')
     call iruler#Init()
 endif
 python << EOF
-# TODO Need to modify to call System/ConfigSync/save_configuration(savemode=SAVE_HIGH_LEVEL_CONFIG)
-bscs = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['System.ConfigSync'])
-cs = bscs.System.ConfigSync
 try:
+    bscs = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['System.ConfigSync'])
+    cs = bscs.System.ConfigSync
     cs.save_configuration("", 1)
+except NameError:
+    print "Please connect to a BigIP first."
 except Exception,e:
     print e
 EOF
