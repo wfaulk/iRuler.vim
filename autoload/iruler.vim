@@ -11,6 +11,8 @@ py libpath = os.path.join(os.path.dirname(os.path.dirname(vim.eval("expand('<sfi
 
 function! iruler#Init()
 let s:initialized = 1
+" Flag noting if the BigIP has changes not saved to disk
+let s:needsave = 0
 "Create a global var to toggle on init. Don't change this!!!
 py create_rule = True
 
@@ -163,6 +165,7 @@ else:
             try:
                 gtm.create(rules = [ruledef])
                 print "New Rule Saved."
+                vim.command("let s:needsave = 1")
                 vim.command("set nomodified")
                 #now that we've created, switch to modify calls.
                 create_rule = False
@@ -172,6 +175,7 @@ else:
             try:
                 ltm.create(rules = [ruledef])
                 print "New Rule Saved."
+                vim.command("let s:needsave = 1")
                 vim.command("set nomodified")
                 #now that we've created, switch to modify calls.
                 create_rule = False
@@ -183,6 +187,7 @@ else:
             try:
                 gtm.modify_rule(rules = [ruledef])
                 print "GTM rule Updated."
+                vim.command("let s:needsave = 1")
                 vim.command("set nomodified")
             except Exception, e:
                 print e
@@ -190,6 +195,7 @@ else:
             try:
                 ltm.modify_rule(rules = [ruledef])
                 print "LTM rule Updated."
+                vim.command("let s:needsave = 1")
                 vim.command("set nomodified")
             except Exception, e:
                 print e
@@ -345,6 +351,7 @@ ruleseq.item = [rule]
 
 try: 
     v.add_rule(virtual_servers = [vs_name],rules=[ruleseq])
+    vim.command("let s:needsave = 1")
     print "Rule applied to: %s" % vs_name
 except Exception,e:
     print e
