@@ -215,20 +215,19 @@ g.insert(0,'GTM')
 
 # Build the menu with vim commands. 
 vim.command(str(get_longest(l)+ 2) + 'vs _irules_')
-vim.command('set shiftwidth=2')
-vim.command('set tabstop=2')
-vim.command('set foldmethod=indent')
+vim.command('setl shiftwidth=2')
+vim.command('setl tabstop=2')
+vim.command('setl foldmethod=indent')
 
 #Set the buffer type for this list to 'nofile'
-vim.command('set buftype=nofile')
-vim.command('set cursorline')
-vim.command('hi CursorLine ctermfg=black ctermbg=grey')
-vim.command('hi Folded ctermfg=darkgreen')
-vim.command('set foldtext=MyFoldText()')
+vim.command('setl buftype=nofile')
+vim.command('setl cursorline')
 
 # Set, write the buffer.
 buf = vim.current.buffer
 buf[:] = l + g
+
+vim.command('setl nomodifiable')
 EOF
 
 endfunction
