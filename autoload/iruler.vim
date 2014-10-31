@@ -214,7 +214,9 @@ l.insert(0,'LTM')
 g.insert(0,'GTM')
 
 # Build the menu with vim commands. 
-vim.command(str(get_longest(l)+ 2) + 'vs _irules_')
+vim.command('ped _iRules_')
+vim.command('wincmd P')
+vim.command('wincmd H')
 vim.command('setl shiftwidth=2')
 vim.command('setl tabstop=2')
 vim.command('setl foldmethod=indent')
@@ -248,7 +250,7 @@ raw_name = vim.current.line #The current line we're on.
 rule_name = clean_name(vim.current.line)
 
 # Delete the rule list buffer to save space. 
-vim.command('bdelete')
+vim.command('pc')
 vim.command(':e ' + rule_name + '.irul')
 buf2 = vim.current.buffer
 buf2[:] = [x.encode('utf8') for x in open_rule(clean_name(raw_name))]
