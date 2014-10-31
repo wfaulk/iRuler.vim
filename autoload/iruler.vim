@@ -7,6 +7,7 @@
 
 function! iruler#Init()
 let s:initialized = 1
+let g:irulerSfile = expand('<sfile>:p')
 "Create a global var to toggle on init. Don't change this!!!
 py create_rule = True
 
