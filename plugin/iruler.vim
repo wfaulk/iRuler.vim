@@ -14,3 +14,15 @@ com! -nargs=1 F5Partition   call iruler#Partition(<args>)
 com! -nargs=0 F5WriteConfig call iruler#WriteConfig(<args>)
 com! -nargs=1 F5ApplyRule   call iruler#ApplyRule(<args>)
 com! -nargs=+ F5DeleteRule  call iruler#DeleteRule(<args>)
+
+" Original vim-iruler commands
+com! Co           F5Connect
+com! Connect      F5Connect
+com! Sav          F5PubRule
+com! Ls           F5GetRules
+com! Get          F5OpenRule
+com! New          F5NewRule
+com! Par          F5Partition
+com! Partition    F5Partition
+com! Apply        F5ApplyRule
+com! Delete       F5DeleteRule
