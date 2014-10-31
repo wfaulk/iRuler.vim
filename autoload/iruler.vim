@@ -154,47 +154,46 @@ try:
 	    ruledef = ltm.typefactory.create('LocalLB.Rule.RuleDefinition')
 except NameError:
 	print "Please connect to a BigIP first."
-	return
-
-ruledef.rule_name = rule_name
-ruledef.rule_definition = text_rule.encode('ascii')
-
-if create_rule:
-    #Create_rule is true, so we're saving for the first time.
-    if save_gtm:
-        try:
-            gtm.create(rules = [ruledef])
-            print "New Rule Saved."
-	    vim.command("set nomodified")
-            #now that we've created, switch to modify calls.
-            create_rule = False
-        except Exception, e:
-            print e
-    else:
-        try:
-            ltm.create(rules = [ruledef])
-            print "New Rule Saved."
-	    vim.command("set nomodified")
-            #now that we've created, switch to modify calls.
-            create_rule = False
-        except Exception, e:
-            print e
 else:
-    # Here we're modifying an existing rule.
-    if save_gtm:
-        try:
-            gtm.modify_rule(rules = [ruledef])
-            print "GTM rule Updated."
-	    vim.command("set nomodified")
-        except Exception, e:
-            print e
-    else:
-        try:
-            ltm.modify_rule(rules = [ruledef])
-            print "LTM rule Updated."
-	    vim.command("set nomodified")
-        except Exception, e:
-            print e
+	ruledef.rule_name = rule_name
+	ruledef.rule_definition = text_rule.encode('ascii')
+
+	if create_rule:
+	    #Create_rule is true, so we're saving for the first time.
+	    if save_gtm:
+		try:
+		    gtm.create(rules = [ruledef])
+		    print "New Rule Saved."
+		    vim.command("set nomodified")
+		    #now that we've created, switch to modify calls.
+		    create_rule = False
+		except Exception, e:
+		    print e
+	    else:
+		try:
+		    ltm.create(rules = [ruledef])
+		    print "New Rule Saved."
+		    vim.command("set nomodified")
+		    #now that we've created, switch to modify calls.
+		    create_rule = False
+		except Exception, e:
+		    print e
+	else:
+	    # Here we're modifying an existing rule.
+	    if save_gtm:
+		try:
+		    gtm.modify_rule(rules = [ruledef])
+		    print "GTM rule Updated."
+		    vim.command("set nomodified")
+		except Exception, e:
+		    print e
+	    else:
+		try:
+		    ltm.modify_rule(rules = [ruledef])
+		    print "LTM rule Updated."
+		    vim.command("set nomodified")
+		except Exception, e:
+		    print e
 EOF
 endfunction
 
@@ -212,40 +211,39 @@ try:
 	g = gtm.get_list()
 except NameError:
 	print "Please connect to a BigIP first."
-	return
+else:
+	# Vim is utf-8 by default, so convert.
+	l = [x.encode('utf8') for x in l]
+	g = [x.encode('utf8') for x in g]
 
-# Vim is utf-8 by default, so convert.
-l = [x.encode('utf8') for x in l]
-g = [x.encode('utf8') for x in g]
+	# Add tabs to allow for code folding of the menu.
+	l = [tabify(x) for x in l]
+	g = [tabify(x) for x in g]
 
-# Add tabs to allow for code folding of the menu.
-l = [tabify(x) for x in l]
-g = [tabify(x) for x in g]
+	l.sort()
+	g.sort()
 
-l.sort()
-g.sort()
+	# Prepend the section title (LTM or GTM)
+	l.insert(0,'LTM')
+	g.insert(0,'GTM')
 
-# Prepend the section title (LTM or GTM)
-l.insert(0,'LTM')
-g.insert(0,'GTM')
+	# Build the menu with vim commands. 
+	vim.command('ped _iRules_')
+	vim.command('wincmd P')
+	vim.command('wincmd H')
+	vim.command('setl shiftwidth=2')
+	vim.command('setl tabstop=2')
+	vim.command('setl foldmethod=indent')
 
-# Build the menu with vim commands. 
-vim.command('ped _iRules_')
-vim.command('wincmd P')
-vim.command('wincmd H')
-vim.command('setl shiftwidth=2')
-vim.command('setl tabstop=2')
-vim.command('setl foldmethod=indent')
+	#Set the buffer type for this list to 'nofile'
+	vim.command('setl buftype=nofile')
+	vim.command('setl cursorline')
 
-#Set the buffer type for this list to 'nofile'
-vim.command('setl buftype=nofile')
-vim.command('setl cursorline')
+	# Set, write the buffer.
+	buf = vim.current.buffer
+	buf[:] = l + g
 
-# Set, write the buffer.
-buf = vim.current.buffer
-buf[:] = l + g
-
-vim.command('setl nomodifiable')
+	vim.command('setl nomodifiable')
 EOF
 
 endfunction
