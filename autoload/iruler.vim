@@ -6,7 +6,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 py import vim
-py import os
+py import os.path
 py libpath = os.path.join(os.path.dirname(os.path.dirname(vim.eval("expand('<sfile>:p')"))), 'pylibs')
 
 function! iruler#Init()
@@ -18,7 +18,6 @@ py create_rule = True
 
 python << EOF
 import sys
-import os.path
 sys.path = [os.path.dirname(libpath), libpath] + sys.path
 
 from pycontrol.pycontrol import BIGIP
