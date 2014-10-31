@@ -321,7 +321,7 @@ python << EOF
 bscs = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['System.ConfigSync'])
 cs = bscs.System.ConfigSync
 try:
-    v.save_configuration("", 1)
+    cs.save_configuration("", 1)
 except Exception,e:
     print e
 EOF
