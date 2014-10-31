@@ -131,7 +131,6 @@ if !exists('s:initialized')
 endif
 python << EOF
 '''Publish the rule you're working on.'''
-# TODO Need to modify to call System/ConfigSync/save_configuration(savemode=SAVE_HIGH_LEVEL_CONFIG)
 # Default to saving rules in an LTM context.
 save_gtm = False
 
@@ -300,12 +299,26 @@ python << EOF
 '''
 Switches the current partition.
 '''
-b2 = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['Management.Partition'])
+bmp = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['Management.Partition'])
 name = vim.eval("a:name")
-b2.Management.Partition.set_active_partition(name)
-print "Current partition is: %s" % b2.Management.Partition.get_active_partition()
+bmp.Management.Partition.set_active_partition(name)
+print "Current partition is: %s" % bmp.Management.Partition.get_active_partition()
 EOF
 endfunction
+
+function! iruler#WriteConfig()
+if !exists('s:initialized')
+    call iruler#Init()
+endif
+python << EOF
+# TODO Need to modify to call System/ConfigSync/save_configuration(savemode=SAVE_HIGH_LEVEL_CONFIG)
+bscs = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['System.ConfigSync'])
+cs = bscs.System.ConfigSync
+try:
+    v.save_configuration("", 1)
+except Exception,e:
+    print e
+EOF
 
 function! iruler#ApplyRule(virtual_server)
 if !exists('s:initialized')
@@ -317,8 +330,8 @@ Applies a rule to the VS name passed in.
 '''
 # Set the default priority. You can override this by doing :py rule_priority=100 for example.
 rule_priority = 500 
-b3 = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['LocalLB.VirtualServer'])
-v = b3.LocalLB.VirtualServer
+blvs = BIGIP(hostname=host,username=user,password=passwd,fromurl=True,wsdls=['LocalLB.VirtualServer'])
+v = blvs.LocalLB.VirtualServer
 # Get names
 vs_name = vim.eval("a:virtual_server")
 rule_name = get_name()
